@@ -53,5 +53,5 @@ namespace solderbitGamepad {
         return (buttonStates & (1 << button)) !== 0;
     }
 
-    control.runInBackground(setupShiftRegister);
+    control.inBackground(setupShiftRegister);
 }
