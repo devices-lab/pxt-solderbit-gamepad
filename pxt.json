@@ -6,6 +6,7 @@
         "core": "*",
         "radio": "*",
         "microphone": "*"
+        "neopixel": "github:microsoft/pxt-neopixel"
     },
     "files": [
         "README.md",

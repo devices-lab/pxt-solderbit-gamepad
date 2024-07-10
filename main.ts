@@ -14,6 +14,21 @@ namespace gamepad {
     let lastButtonStates = 0;
     let lastDebounceTime = control.millis();
 
+    // Set-up for the NeoPixels 
+    let neoPixelStrip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB)
+    neoPixelStrip.clear()
+    neoPixelStrip.show()
+
+    /**
+     * This variable returns the internal reference to the NeoPixel strip on the
+     * solder:bit, so it can be used with the NeoPixel extension.
+     */
+    //% block="the ClipBit Pixel Strip"
+    //% group="Pixels and LEDs" advanced="true"
+    export function clipBitPixels() : neopixel.Strip {
+        return neoPixelStrip
+    }
+
     // Enum for button mapping
     export enum Button {
         RightBumper = 0,
