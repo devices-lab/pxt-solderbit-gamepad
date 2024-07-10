@@ -49,12 +49,12 @@ namespace gamepad {
     return (buttonStates & button) !== 0; // Use the button enum directly as a mask
   }
 
-  // Add logic block for checking button press in 'if' statements
-  //% block="if button $button is pressed"
-  //% group="Buttons"
-  export function ifButtonPressed(button: Button): boolean {
-    return isButtonPressed(button);
-  }
+//   // Add logic block for checking button press in 'if' statements
+//   //% block="if button $button is pressed"
+//   //% group="Buttons"
+//   export function ifButtonPressed(button: Button): boolean {
+//     return isButtonPressed(button);
+//   }
 
   function readShiftRegister(): number {
     pins.digitalWritePin(parallelLoad, 0);
