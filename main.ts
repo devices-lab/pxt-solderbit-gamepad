@@ -1,4 +1,5 @@
 //% weight=100 color=190 icon="\uf11b" block="solder:bit Gamepad"
+//% groups="['Buttons', 'NeoPixels']"
 namespace gamepad {
     // Pins setup
     let serialOut = DigitalPin.P0;
@@ -7,37 +8,36 @@ namespace gamepad {
 
     // Constants
     const NUM_BUTTONS = 8;
+    const DEBOUNCE_INTERVAL = 50; // Debounce time in milliseconds
+
+    // Variables to track button state and debounce
+    let lastButtonStates = 0;
+    let lastDebounceTime = control.millis();
 
     // Enum for button mapping
     export enum Button {
-        //% block="right bumper"
         RightBumper = 0,
-        //% block="left bumper"
         LeftBumper = 1,
-        //% block="right"
         Right = 2,
-        //% block="up"
         Up = 3,
-        //% block="left"
         Left = 4,
-        //% block="down"
         Down = 5,
-        //% block="Y"
         Y = 6,
-        //% block="X"
         X = 7
     }
 
-    /**
-     * Read button states from the shift register
-     */
+    //% block="button $button is pressed"
+    //% group="Buttons"
+    export function isButtonPressed(button: Button): boolean {
+        let buttonStates = readShiftRegister();
+        return (buttonStates & (1 << button)) !== 0;
+    }
+
     function readShiftRegister(): number {
-        // Pulse the parallel load to load the button states
         pins.digitalWritePin(parallelLoad, 0);
         control.waitMicros(5);
         pins.digitalWritePin(parallelLoad, 1);
 
-        // Read the serial output from the shift register
         let buttonStates = 0;
         for (let i = 0; i < NUM_BUTTONS; i++) {
             pins.digitalWritePin(clock, 0);
@@ -51,12 +51,44 @@ namespace gamepad {
         return buttonStates;
     }
 
-    /**
-     * Check if a specific button is pressed
-     */
-    //% block="button $button is pressed"
-    export function isButtonPressed(button: Button): boolean {
-        let buttonStates = readShiftRegister();
-        return (buttonStates & (1 << button)) !== 0;
+    // Event handlers storage
+    let buttonPressHandlers: { [key: number]: () => void } = {};
+    let buttonReleaseHandlers: { [key: number]: () => void } = {};
+
+    //% block="on button $button pressed"
+    //% group="Buttons"
+    export function onButtonPressed(button: Button, handler: () => void) {
+        buttonPressHandlers[button] = handler;
     }
+
+    //% block="on button $button released"
+    //% group="Buttons"
+    export function onButtonReleased(button: Button, handler: () => void) {
+        buttonReleaseHandlers[button] = handler;
+    }
+
+    // Monitoring button state changes
+    control.inBackground(() => {
+        while (true) {
+            let currentMillis = control.millis();
+            if (currentMillis - lastDebounceTime > DEBOUNCE_INTERVAL) {
+                let newButtonStates = readShiftRegister();
+                if (newButtonStates !== lastButtonStates) {
+                    for (let i = 0; i < NUM_BUTTONS; i++) {
+                        let mask = 1 << i;
+                        if ((newButtonStates & mask) !== (lastButtonStates & mask)) {
+                            if ((newButtonStates & mask) !== 0 && buttonPressHandlers[i]) {
+                                buttonPressHandlers[i]();
+                            } else if ((newButtonStates & mask) === 0 && buttonReleaseHandlers[i]) {
+                                buttonReleaseHandlers[i]();
+                            }
+                        }
+                    }
+                    lastButtonStates = newButtonStates;
+                }
+                lastDebounceTime = currentMillis;
+            }
+            basic.pause(10);
+        }
+    });
 }
