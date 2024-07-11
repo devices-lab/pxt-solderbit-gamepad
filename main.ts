@@ -15,7 +15,7 @@ namespace gamepad {
   let lastDebounceTime = control.millis();
 
   // Enum for button mapping
-  export enum Button {1
+  export enum Button {
     //% block="right trigger"
     RightBumper = 0,
     //% block="left trigger"
@@ -31,7 +31,7 @@ namespace gamepad {
     //% block="Y"
     Y = 6,
     //% block="X"
-    X = 7,
+    X = 7
   }
 
   const strip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
