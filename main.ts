@@ -34,7 +34,7 @@ namespace gamepad {
     X = 7,
   }
 
-  let gamepadPixels = neopixel.create(DigitalPin.P2, 5, NeoPixelMode.RGB);
+  let gamepadPixels = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
   gamepadPixels.clear();
   gamepadPixels.show();
 
