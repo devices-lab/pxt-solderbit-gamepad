@@ -1,23 +1,3 @@
-//% blockNamespace=gamepad
-export enum GamepadButton {
-  //% block="right trigger"
-  RightBumper = 0, // 0b00000001
-  //% block="left trigger"
-  LeftBumper = 1, // 0b00000010
-  //% block="right"
-  Right = 2, // 0b00000100
-  //% block="up"
-  Up = 3, // 0b00001000
-  //% block="left"
-  Left = 4, // 0b00010000
-  //% block="down"
-  Down = 5, // 0b00100000
-  //% block="Y"
-  Y = 6, // 0b01000000
-  //% block="X"
-  X = 7, // 0b10000000
-}
-
 //% weight=100 color=#2b2b2b icon="\uf11b" block="solder:bit Gamepad"
 //% groups="['Buttons', 'NeoPixels']"
 namespace gamepad {
@@ -34,6 +14,24 @@ namespace gamepad {
   let lastButtonStates = 0;
   let lastDebounceTime = control.millis();
 
+  export enum GamepadButton {
+    //% block="right trigger"
+    RightBumper = 0, // 0b00000001
+    //% block="left trigger"
+    LeftBumper = 1, // 0b00000010
+    //% block="right"
+    Right = 2, // 0b00000100
+    //% block="up"
+    Up = 3, // 0b00001000
+    //% block="left"
+    Left = 4, // 0b00010000
+    //% block="down"
+    Down = 5, // 0b00100000
+    //% block="Y"
+    Y = 6, // 0b01000000
+    //% block="X"
+    X = 7, // 0b10000000
+  }
 
   let strip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
   strip.clear();
