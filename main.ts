@@ -14,39 +14,41 @@ namespace gamepad {
   let lastButtonStates = 0;
   let lastDebounceTime = control.millis();
 
-  // // Set-up for the NeoPixels
-  // let neoPixelStrip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB)
-  // neoPixelStrip.clear()
-  // neoPixelStrip.show()
-
-  // /**
-  //  * This variable returns the internal reference to the NeoPixel strip on the
-  //  * solder:bit, so it can be used with the NeoPixel extension.
-  //  */
-  // //% block="the ClipBit Pixel Strip"
-  // //% group="Pixels and LEDs" advanced="true"
-  // export function clipBitPixels() : neopixel.Strip {
-  //     return neoPixelStrip
-  // }
-
-  // Enum for button mapping, adjusted to powers of two
+  // Enum for button mapping
   export enum Button {
-    RightBumper = 1, // 2^0
-    LeftBumper = 2, // 2^1
-    Right = 4, // 2^2
-    Up = 8, // 2^3
-    Left = 16, // 2^4
-    Down = 32, // 2^5
-    Y = 64, // 2^6
-    X = 128, // 2^7
+    //% block="right trigger"
+    RightBumper = 0,
+    //% block="left trigger"
+    LeftBumper = 1,
+    //% block="right"
+    Right = 2,
+    //% block="up"
+    Up = 3,
+    //% block="left"
+    Left = 4,
+    //% block="down"
+    Down = 5,
+    //% block="Y"
+    Y = 6,
+    //% block="X"
+    X = 7,
   }
 
-  // Function to check a specific button press using bit mask
+  let gamepadPixels = neopixel.create(DigitalPin.P2, 5, NeoPixelMode.RGB);
+  gamepadPixels.clear();
+  gamepadPixels.show();
+
+  //% block="the solder:bit NeoPixel array"
+  //% group="NeoPixels" advanced="true"
+  export function solderbitPixels(): neopixel.Strip {
+    return gamepadPixels;
+  }
+
   //% block="button $button is pressed"
   //% group="Buttons"
   export function isButtonPressed(button: Button): boolean {
     let buttonStates = readShiftRegister();
-    return (buttonStates & button) !== 0; // Use the button enum directly as a mask
+    return (buttonStates & (1 << button)) !== 0;
   }
 
   function readShiftRegister(): number {
