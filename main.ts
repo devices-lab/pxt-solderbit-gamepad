@@ -1,4 +1,4 @@
-//% weight=100 color=190 icon="\uf11b" block="solder:bit Gamepad"
+//% weight=100 color=#2b2b2b icon="\uf11b" block="solder:bit Gamepad"
 //% groups="['Buttons', 'NeoPixels']"
 namespace gamepad {
   // Pins setup
@@ -57,7 +57,8 @@ namespace gamepad {
     pins.digitalWritePin(parallelLoad, 1);
 
     let buttonStates = 0;
-    for (let i = 0; i < NUM_BUTTONS; i++) {
+    //for (let i = 0; i < NUM_BUTTONS; i++) {
+    for (let i = NUM_BUTTONS - 1; i >= 0; i--) {
       pins.digitalWritePin(clock, 0);
       control.waitMicros(2); // Clock pulse width
       if (pins.digitalReadPin(serialOut) === 1) {
