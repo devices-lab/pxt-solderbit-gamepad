@@ -34,14 +34,14 @@ namespace gamepad {
     X = 7,
   }
 
-  let gamepadPixels = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
-  gamepadPixels.clear();
-  gamepadPixels.show();
+  const strip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
+  strip.clear();
+  strip.show();
 
   //% block="the solder:bit NeoPixel array"
   //% group="NeoPixels" advanced="true"
   export function solderbitPixels(): neopixel.Strip {
-    return gamepadPixels;
+    return strip;
   }
 
   //% block="button $button is pressed"
