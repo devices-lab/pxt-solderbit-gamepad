@@ -15,23 +15,25 @@ namespace gamepad {
   let lastDebounceTime = control.millis();
 
   // Enum for button mapping
+
+  //% blockNamespace=gamepad
   export enum Button {
     //% block="right trigger"
-    RightBumper = 1 << 0, // 0b00000001
+    RightBumper = 0, // 0b00000001
     //% block="left trigger"
-    LeftBumper = 1 << 1, // 0b00000010
+    LeftBumper = 1, // 0b00000010
     //% block="right"
-    Right = 1 << 2, // 0b00000100
+    Right = 2, // 0b00000100
     //% block="up"
-    Up = 1 << 3, // 0b00001000
+    Up = 3, // 0b00001000
     //% block="left"
-    Left = 1 << 4, // 0b00010000
+    Left = 4, // 0b00010000
     //% block="down"
-    Down = 1 << 5, // 0b00100000
+    Down = 5, // 0b00100000
     //% block="Y"
-    Y = 1 << 6, // 0b01000000
+    Y = 6, // 0b01000000
     //% block="X"
-    X = 1 << 7, // 0b10000000
+    X = 7, // 0b10000000
   }
 
   const strip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
@@ -48,7 +50,7 @@ namespace gamepad {
   //% group="Buttons"
   export function isButtonPressed(button: Button): boolean {
     let buttonStates = readShiftRegister();
-    return (buttonStates & button) !== 0;
+    return (buttonStates & (1 << button)) !== 0;
   }
 
   function readShiftRegister(): number {
@@ -57,12 +59,11 @@ namespace gamepad {
     pins.digitalWritePin(parallelLoad, 1);
 
     let buttonStates = 0;
-    //for (let i = 0; i < NUM_BUTTONS; i++) {
-    for (let i = NUM_BUTTONS - 1; i >= 0; i--) {
+    for (let i = 0; i < NUM_BUTTONS; i++) {
       pins.digitalWritePin(clock, 0);
       control.waitMicros(2); // Clock pulse width
       if (pins.digitalReadPin(serialOut) === 1) {
-        buttonStates |= 1 << i;
+        buttonStates |= 1 << (NUM_BUTTONS - 1 - i);
       }
       pins.digitalWritePin(clock, 1);
       control.waitMicros(2); // Ensure clock high time
