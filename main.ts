@@ -17,21 +17,21 @@ namespace gamepad {
   // Enum for button mapping
   export enum Button {
     //% block="right trigger"
-    RightBumper = 0,
+    RightBumper = 1 << 0,
     //% block="left trigger"
-    LeftBumper = 1,
+    LeftBumper = 1 << 1,
     //% block="right"
-    Right = 2,
+    Right = 1 << 2,
     //% block="up"
-    Up = 3,
+    Up = 1 << 3,
     //% block="left"
-    Left = 4,
+    Left = 1 << 4,
     //% block="down"
-    Down = 5,
+    Down = 1 << 5,
     //% block="Y"
-    Y = 6,
+    Y = 1 << 6,
     //% block="X"
-    X = 7
+    X = 1 << 7
   }
 
   const strip = neopixel.create(DigitalPin.P1, 5, NeoPixelMode.RGB);
@@ -48,7 +48,7 @@ namespace gamepad {
   //% group="Buttons"
   export function isButtonPressed(button: Button): boolean {
     let buttonStates = readShiftRegister();
-    return (buttonStates & (1 << button)) !== 0;
+    return (buttonStates & button) !== 0;
   }
 
   function readShiftRegister(): number {
@@ -61,7 +61,7 @@ namespace gamepad {
       pins.digitalWritePin(clock, 0);
       control.waitMicros(2); // Clock pulse width
       if (pins.digitalReadPin(serialOut) === 1) {
-        buttonStates |= 1 << (NUM_BUTTONS - 1 - i);
+        buttonStates |= (1 << i);
       }
       pins.digitalWritePin(clock, 1);
       control.waitMicros(2); // Ensure clock high time
