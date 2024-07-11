@@ -38,22 +38,10 @@ namespace gamepad {
   strip.clear();
   strip.show();
 
-  //% block="the solder:bit NeoPixel array"
-  //% group="NeoPixels" advanced="true"
+  //% block="the Gamepad pixel array"
+  //% group="NeoPixels"
   export function solderbitPixels(): neopixel.Strip {
     return strip;
-  }
-
-  /**
-   * Clears all color data for the pixels, and turns them off
-   */
-  //% block="turn off all Gamepad NeoPixels"
-  //% group="NeoPixels
-  export function clearAllGamepadPixels() {
-    led.enable(false);
-    strip.clear();
-    strip.show();
-    led.enable(true);
   }
 
   //% block="is Gamepad button $button pressed"
