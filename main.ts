@@ -38,7 +38,7 @@ namespace gamepad {
   strip.clear();
   strip.show();
 
-  //% block="the Gamepad pixel array"
+  //% block="Gamepad pixel array"
   //% group="NeoPixels"
   export function solderbitPixels(): neopixel.Strip {
     return strip;
