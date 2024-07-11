@@ -15,7 +15,7 @@ namespace gamepad {
   let lastDebounceTime = control.millis();
 
   // Enum for button mapping
-  export enum Button {
+  export enum Button {1
     //% block="right trigger"
     RightBumper = 0,
     //% block="left trigger"
