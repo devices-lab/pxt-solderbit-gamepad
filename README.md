@@ -5,7 +5,7 @@
 1. Open [MakeCode](https://makecode.microbit.org/) and create a new project, or open an exisitng one.
 2. Click on `Extensions` under the gearwheel menu.
 
-![MakeCode preview with the solder:bit Gamepad extension](/guide/makecode.png)
+![MakeCode](/guide/makecode.png)
 
 3. Search for `https://github.com/devices-lab/pxt-solderbit-gamepad`
 
